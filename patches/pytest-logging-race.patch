@@ -1,0 +1,9 @@
+diff --git a/src/_pytest/logging.py b/src/_pytest/logging.py
+--- a/src/_pytest/logging.py
++++ b/src/_pytest/logging.py
+@@
+-        for logger in root_logger.manager.loggerDict.values():
++        # Iterate a snapshot because logging.getLogger() may register loggers
++        # from another thread while capture setup is in progress.
++        for logger in list(root_logger.manager.loggerDict.values()):
+*** End Patch
