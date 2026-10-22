@@ -23,3 +23,4 @@ The regression test forces the race deterministically: while capture setup inspe
 ## Scope
 
 This repository isolates the reported failure and demonstrates the proposed one-line fix. It does not vendor pytest or claim that the full pytest suite has been run.
+
