@@ -5,8 +5,6 @@ from __future__ import annotations
 import logging
 import threading
 import unittest
-from unittest.mock import patch
-
 from logger_registry_race.capture import attach_non_propagating_loggers, detach_loggers
 
 
@@ -55,8 +53,7 @@ class LoggerRegistryRaceTests(unittest.TestCase):
         old_new = manager.loggerDict.get(new_name)
         manager.loggerDict[trigger_name] = TriggerLogger(trigger_name, mutate_registry)
         try:
-            with patch.object(manager, "loggerDict", manager.loggerDict):
-                attached = attach_non_propagating_loggers(handler, snapshot=snapshot)
+            attach_non_propagating_loggers(handler, snapshot=snapshot)
             if worker is not None:
                 worker.join(timeout=2)
             self.assertFalse(worker and worker.is_alive(), "logger registration worker did not finish")
@@ -84,4 +81,5 @@ class LoggerRegistryRaceTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
 
