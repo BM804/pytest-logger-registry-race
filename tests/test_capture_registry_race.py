@@ -29,12 +29,12 @@ class LoggerRegistryRaceTests(unittest.TestCase):
         trigger_name = "repro.concurrent-registration.trigger"
         new_name = "repro.concurrent-registration.from-worker"
         mutation_completed = threading.Event()
-        worker_errors: list[BaseException] = []
+        worker_errors: list[Exception] = []
 
         def register_logger() -> None:
             try:
                 logging.getLogger(new_name)
-            except BaseException as exc:  # surfaced in the controlling thread below
+            except Exception as exc:  # surfaced in the controlling thread below
                 worker_errors.append(exc)
             finally:
                 mutation_completed.set()
@@ -81,5 +81,6 @@ class LoggerRegistryRaceTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
 
 
